@@ -1,7 +1,8 @@
 var px = 40;
 var snakeSpeed = 10;
 var h;
-var w; 
+var w;
+var up,down,left,right; 
 
 var s;
 var f;
@@ -15,6 +16,21 @@ function setup() {
 	w = windowWidth - (windowWidth%px);
 	s = new snake();
 	f = new food();
+	
+	//Buttons 
+	up = createButton('UP');
+	up.position(w- 2.25*px,h + 0.5*px);
+	up.mousePressed(upbutton);
+	down = createButton('DOWN');
+	down.position(w-2.5*px,h + 2*px);
+	down.mousePressed(downbutton);
+	left = createButton('LEFT');
+	left.position(w-3.75*px,h + 1.25*px);
+	left.mousePressed(leftbutton);
+	right = createButton('RIGHT');
+	right.position(w-1.25*px,h + 1.25*px);
+	right.mousePressed(rightbutton);
+	//Buttons done
 }
 
 function draw() {
@@ -37,6 +53,7 @@ function draw() {
 	line(w, 0, w, h);
 	line(0, h, w, h);
 	// Grid over
+
 	if(dead == false){
 		f.display();
 
@@ -63,16 +80,16 @@ function draw() {
 
 function keyPressed(){
 	if (keyCode == UP_ARROW){
-		s.velocity = createVector(0,-px);
+		s.set(0);
 	}
 	else if (keyCode == DOWN_ARROW){
-		s.velocity = createVector(0,px);
+		s.set(1);
 	}
 	else if (keyCode == LEFT_ARROW){
-		s.velocity = createVector(-px,0);
+		s.set(2);
 	}
 	else if (keyCode == RIGHT_ARROW){
-		s.velocity = createVector(px,0);
+		s.set(3);
 	}
 }
 
@@ -102,6 +119,12 @@ snake.prototype.eat = function(f){
 		count+=1;
 	}
 }
+snake.prototype.set =function(n){
+	if (n == 0){ s.velocity = createVector(0,-px);}
+	else if (n ==1){s.velocity = createVector(0,px);}
+	else if (n == 2){s.velocity = createVector(-px,0);}
+	else if (n == 3){s.velocity = createVector(px,0);}
+}
 
 
 food.prototype.display = function(){
@@ -114,4 +137,16 @@ function roundOff(n){
 	n.x = n.x - (n.x % px);
 	n.y = n.y - (n.y % px);
 	return createVector(n.x,n.y);
+}
+function upbutton(){
+	{ s.set(0);}
+}
+function downbutton(){
+	{ s.set(1);}
+}
+function leftbutton(){
+	{ s.set(2);}
+}
+function rightbutton(){
+	{ s.set(3);}
 }
